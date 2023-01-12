@@ -63,7 +63,6 @@ defmodule PlateSlate.MixProject do
       test: [
         "ecto.create --quiet",
         "ecto.migrate --quiet",
-        "run priv/repo/seeds.exs",
         "test"
       ]
     ]
