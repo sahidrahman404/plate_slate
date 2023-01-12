@@ -101,4 +101,17 @@ defmodule PlateSlate.Menu do
   def change_category(%Category{} = category, attrs \\ %{}) do
     Category.changeset(category, attrs)
   end
+
+
+  alias PlateSlate.Menu.Item
+
+  def list_items(%{matching: name}) when is_binary(name) do
+    Item
+    |> where([m], ilike(m.name, ^"%#{name}%"))
+    |> Repo.all()
+  end
+  def list_items(_) do
+    Repo.all(Item)
+  end
+
 end
