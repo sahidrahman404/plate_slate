@@ -9,6 +9,15 @@ defmodule PlateSlateWeb.Router do
     pipe_through :api
   end
 
+  scope "/" do
+    pipe_through :api
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: PlateSlateWeb.Schema,
+      interface: :simple,
+      context: %{pubsub: PlateSlateWeb.Endpoint}
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
