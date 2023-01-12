@@ -3,10 +3,10 @@ defmodule PlateSlate.Repo.Migrations.CreateItems do
 
   def change do
     create table(:items) do
-      add :name, :string
+      add :name, :string, null: false
       add :description, :string
-      add :price, :decimal
-      add :added_on, :date
+      add :price, :decimal, null: false 
+      add :added_on, :date, null: false, default: fragment("NOW()")
       add :category_id, references(:categories, on_delete: :nothing)
 
       timestamps()
