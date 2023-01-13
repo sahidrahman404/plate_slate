@@ -2,6 +2,11 @@ defmodule PlateSlateWeb.Schema do
   alias PlateSlateWeb.Resolvers
   use Absinthe.Schema
 
+  enum :sort_order do
+    value(:asc)
+    value(:desc)
+  end
+
   query do
     @desc "The list of available items on the menu"
     field :menu_items, list_of(:menu_item) do
