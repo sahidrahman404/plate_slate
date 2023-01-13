@@ -83,7 +83,7 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
     {
       menuItems(matching: 123){
         name
-    }
+      }
     }
   """
 
@@ -97,5 +97,60 @@ defmodule PlateSlateWeb.Schema.Query.MenuItemsTest do
            } = json_response(response, 200)
 
     assert message == "Argument \"matching\" has invalid value 123."
+  end
+
+  @query """
+  {
+    menuItems(order: DESC){
+      name
+    }
+  }
+  """
+
+  test "menuItems should returns in descending order using literals" do
+    response = get(build_conn(), "/api", query: @query)
+
+    assert %{"data" => %{"menuItems" => [%{"name" => "Water"} | _]}} =
+             json_response(response, 200)
+  end
+
+  @query """
+  {
+    menuItems(order: ASC){
+      name
+    }
+  }
+  """
+
+  test "menuItems should returns in ascending order using literals" do
+    response = get(build_conn(), "/api", query: @query)
+
+    assert %{"data" => %{"menuItems" => [%{"name" => "Bánh mì"} | _]}} =
+             json_response(response, 200)
+  end
+
+  @query """
+  query($order: SortOrder!){
+    menuItems(order: $order){
+      name
+    }
+  }
+  """
+
+  @variables %{"order" => "DESC"}
+  test "menuItems should returns in descending order using variables" do
+    response = get(build_conn(), "/api", query: @query, variables: @variables)
+
+    assert %{"data" => %{"menuItems" => [%{"name" => "Water"} | _]}} =
+             json_response(response, 200)
+  end
+
+
+  @variables %{"order" => "ASC"}
+  test "menuItems should returns in ascending order using variables" do
+    response = get(build_conn(), "/api", query: @query, variables: @variables)
+
+    assert %{"data" => %{"menuItems" => [%{"name" => "Bánh mì"} | _]}} =
+             json_response(response, 200)
   end
 end
